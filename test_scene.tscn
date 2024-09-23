@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://b0g3po6b4jxvi"]
+[gd_scene load_steps=12 format=3 uid="uid://b0g3po6b4jxvi"]
 
 [ext_resource type="PackedScene" uid="uid://b63jaqar23iun" path="res://player/actor.tscn" id="1_h2d4q"]
 [ext_resource type="PackedScene" uid="uid://btji3qbvo2r52" path="res://addons/retractable_rope_jolt/rope_origin.tscn" id="2_5y4k6"]
@@ -24,6 +24,16 @@ albedo_color = Color(0.303233, 0.303233, 0.303233, 1)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_la8rs"]
 size = Vector2(10, 10)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_qct8b"]
+height = 0.1
+radius = 0.55
+
+[sub_resource type="TorusMesh" id="TorusMesh_kiedl"]
+inner_radius = 0.55
+outer_radius = 0.4
+rings = 24
+ring_segments = 6
 
 [node name="Node3D" type="Node3D"]
 
@@ -56,7 +66,7 @@ collision_layer = 1
 rope_controller = NodePath("RopeOrigin")
 camera = NodePath("../Camera3D")
 
-[node name="RopeOrigin" parent="PlayerCharacter" node_paths=PackedStringArray("_rope_start") instance=ExtResource("2_5y4k6")]
+[node name="RopeOrigin" parent="PlayerCharacter" node_paths=PackedStringArray("_rope_start", "_rope_end") instance=ExtResource("2_5y4k6")]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -0.502393)
 rope_hole_radius = 0.05
 rope_radius = 0.05
@@ -65,3 +75,17 @@ layer = 536870912
 mask = 536870912
 rope_material = ExtResource("3_vgrm0")
 _rope_start = NodePath("..")
+_rope_end = NodePath("../../End")
+
+[node name="End" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.90088, 1.09634, 0)
+collision_layer = 536870913
+collision_mask = 536870913
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="End"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -0.5, 0)
+shape = SubResource("CylinderShape3D_qct8b")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="End"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -0.5, 0)
+mesh = SubResource("TorusMesh_kiedl")

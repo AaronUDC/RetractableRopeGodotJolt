@@ -49,6 +49,7 @@ freeze = true
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Start"]
 transform = Transform3D(1, -8.88178e-16, 0, -8.88178e-16, 1, 0, 0, 0, 1, 0, 0.423114, 0)
+visible = false
 shape = SubResource("CapsuleShape3D_38vm8")
 
 [node name="RopeOrigin" parent="Start" node_paths=PackedStringArray("_rope_start", "_rope_end") instance=ExtResource("1_t0b1b")]
@@ -61,6 +62,7 @@ _rope_end = NodePath("../../End")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Start"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.21026e-08, 0.505647, 0)
+visible = false
 mesh = SubResource("CylinderMesh_idawa")
 
 [node name="Camera3D" type="Camera3D" parent="."]

@@ -2,7 +2,7 @@ extends Node3D
 class_name RopeController
 
 ## This signal is emmited when the rope is completely retracted.
-signal finished_rope
+signal retracted_rope
 ## This signal is emmited when the rope has reached a target length provided in the 
 ## [method add_rope] method. 
 signal extended_rope
@@ -119,7 +119,7 @@ func remove_rope(distance:float):
 			#Delete segments and points in curve necesary for achieving the new lenght.
 			if _segment_count == 1:
 				#Stop retracting rope  if is the last segment and emit a signal.
-				finished_rope.emit()
+				retracted_rope.emit()
 				print("Finished rope")
 				_rope_length = 0.0
 				return
@@ -140,13 +140,13 @@ func remove_rope(distance:float):
 ## Extends the rope by the [param distance] provided until it reaches the [param maximun].
 ## When the maximun ammount is reached, the rope will stop extending and the signal
 ## [signal extended_rope] is emmited.
-func add_rope(distance : float, maximun : float):
+func add_rope(distance : float, maximun: float = -1):
 	
-	if _rope_length >= maximun: 
+	if maximun>0 and _rope_length >= maximun: 
 		return
 	
 	var new_length = _rope_length + distance
-	if new_length > maximun: new_length = maximun
+	if maximun > 0 and new_length > maximun: new_length = maximun
 	
 	# Do stuff if the lenght has not reached the maximun.
 	var first_segment_offset = _get_first_segment_offset(_rope_length)
@@ -186,7 +186,7 @@ func add_rope(distance : float, maximun : float):
 		_rope_length = new_length
 		_update_weights()
 
-	if _rope_length >= maximun:
+	if maximun > 0 and _rope_length >= maximun:
 		extended_rope.emit()
 		print("Extended rope")
 
