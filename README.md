@@ -65,7 +65,7 @@ This addon can still be extended with more features and improvements.
  
 Currently, the rope is generated along a straight line in front of the hole, moving the attached endpoint node, to the end of the rope. In the future it would be desirable to be able to generate the rope between the hole and the attached endpoint with the specified length. This way, the rope will not start fully extended and can be placed in tighter spaces.
 
-Another problem is the performance of the rope visuals. Currently the string mesh is remeshed at each frame using the *SurfaceTool* interface. This is a Godot interface that provides a simple but powerful way to build geometry, but is not as well suited for real-time rendering updates. The result is that mesh rendering takes up the vast majority of the string processing time in each frame.
+Another problem is the performance of the rope visuals. Currently the string mesh is remeshed at each frame using the *SurfaceTool* interface. This is a Godot interface that provides a simple but powerful way to build geometry, but is not as well suited for real-time rendering updates. The result is that mesh rendering takes up the vast majority of the rope frame time.
 
 ![Frame time of the rendering method of the rope](https://github.com/user-attachments/assets/707b6fa9-6ce9-4015-9480-34706dcd3488)
 
