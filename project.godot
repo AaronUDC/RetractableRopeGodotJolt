@@ -10,8 +10,8 @@ config_version=5
 
 [application]
 
-config/name="PruebaCuerdas"
-run/main_scene="res://TestScene.tscn"
+config/name="RetractableRopeGodotJolt"
+run/main_scene="res://test_scene.tscn"
 config/features=PackedStringArray("4.3", "Mobile")
 config/icon="res://icon.svg"
 
