@@ -1,0 +1,119 @@
+[gd_scene load_steps=10 format=3 uid="uid://dxflt0yjenouv"]
+
+[ext_resource type="Script" path="res://scenes/slider_test.gd" id="1_xwp82"]
+[ext_resource type="PackedScene" uid="uid://b27wig8yyqopl" path="res://addons/retractable_rope_jolt/rope_hole/rope_hole.tscn" id="2_r84hl"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_fmtay"]
+flip_faces = true
+top_radius = 0.1
+bottom_radius = 0.2
+height = 1.0
+cap_bottom = false
+
+[sub_resource type="Environment" id="Environment_ebyhc"]
+ambient_light_source = 2
+ambient_light_color = Color(0.577008, 0.577008, 0.577008, 1)
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_hqnfv"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_l3kr6"]
+resource_local_to_scene = true
+radius = 0.1
+height = 0.5
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_v0ioi"]
+resource_local_to_scene = true
+radius = 0.1
+height = 0.5
+radial_segments = 6
+rings = 1
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_18vqk"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0g2bv"]
+size = Vector3(2, 0.61528, 2)
+
+[node name="Node3D" type="Node3D" node_paths=PackedStringArray("agujero", "segment", "segment2")]
+script = ExtResource("1_xwp82")
+agujero = NodePath("RopeHole")
+segment = NodePath("RopeSegment")
+segment2 = NodePath("RopeSegment2")
+
+[node name="RopeHole" parent="." instance=ExtResource("2_r84hl")]
+linear_limit_y/upper = 0.4
+linear_spring_x/frequency = 10.0
+linear_spring_x/damping = 0.5
+linear_spring_z/frequency = 10.0
+linear_spring_z/damping = 0.5
+angular_spring_y/enabled = true
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 2.05503, 0)
+hole_depth = 0.4
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RopeHole"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.500222, 0)
+mesh = SubResource("CylinderMesh_fmtay")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.8602, 1.2818e-08, 0.509958, -0.49279, 0.257285, 0.831242, -0.131204, -0.966336, 0.221316, 0, 6.65255, 0)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.962937, -0.142525, 0.228994, 0, 0.848991, 0.528407, -0.269725, -0.508823, 0.817525, 0.801913, 3.14075, 2.78229)
+environment = SubResource("Environment_ebyhc")
+current = true
+
+[node name="RopeSegment2" type="RigidBody3D" parent="."]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0.869003, 1.22921, 0)
+top_level = true
+collision_layer = 536870912
+collision_mask = 536870912
+physics_material_override = SubResource("PhysicsMaterial_hqnfv")
+can_sleep = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RopeSegment2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.239257, 0)
+shape = SubResource("CapsuleShape3D_l3kr6")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RopeSegment2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.239257, 0)
+mesh = SubResource("CapsuleMesh_v0ioi")
+skeleton = NodePath("../../RopeSegment2")
+
+[node name="RopeSegment" type="RigidBody3D" parent="."]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0.502559, 1.22921, 0)
+top_level = true
+collision_layer = 536870912
+collision_mask = 536870912
+physics_material_override = SubResource("PhysicsMaterial_hqnfv")
+can_sleep = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RopeSegment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.207329, 0)
+shape = SubResource("CapsuleShape3D_l3kr6")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RopeSegment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.207329, 0)
+mesh = SubResource("CapsuleMesh_v0ioi")
+
+[node name="JoltConeTwistJoint3D" type="JoltConeTwistJoint3D" parent="RopeSegment"]
+swing_limit_span = 2.61799
+twist_limit_enabled = true
+twist_limit_span = 0.174533
+node_a = NodePath("..")
+node_b = NodePath("../../RopeSegment2")
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0, -0.392744, 0)
+
+[node name="RayCast3D" type="RayCast3D" parent="RopeSegment/JoltConeTwistJoint3D"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Suelo" type="MeshInstance3D" parent="."]
+transform = Transform3D(2.09668, 0, 0, 0, 1, 0, 0, 0, 2.09668, 0, 0.803621, 0)
+mesh = SubResource("PlaneMesh_18vqk")
+skeleton = NodePath("Area3D")
+
+[node name="Area3D" type="StaticBody3D" parent="Suelo"]
+collision_layer = 536870913
+collision_mask = 536870913
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Suelo/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.270858, 0)
+shape = SubResource("BoxShape3D_0g2bv")

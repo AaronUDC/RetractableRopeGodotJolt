@@ -1,0 +1,87 @@
+[gd_scene load_steps=9 format=3 uid="uid://dyiqjetd4fkpe"]
+
+[ext_resource type="PackedScene" uid="uid://btji3qbvo2r52" path="res://addons/retractable_rope_jolt/rope_origin.tscn" id="1_t0b1b"]
+[ext_resource type="Material" uid="uid://bk0ac8swwl04e" path="res://textures/rope_mat.tres" id="2_uyufu"]
+
+[sub_resource type="GDScript" id="GDScript_upk8t"]
+script/source = "extends Node3D
+
+@export var rope: RopeController
+var ropeSpeed = .5
+
+func _physics_process(delta):
+
+	if Input.is_action_pressed(\"movement_forward\"):
+		rope.add_rope(ropeSpeed * delta, 20)
+	if Input.is_action_pressed(\"movement_back\"):
+		rope.remove_rope(ropeSpeed * delta)
+"
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_38vm8"]
+radius = 0.195147
+height = 0.931359
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_idawa"]
+top_radius = 0.2
+bottom_radius = 0.2
+height = 1.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2gpbb"]
+size = Vector3(50, 0.5, 50)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_nqbs7"]
+height = 0.1
+radius = 0.55
+
+[sub_resource type="TorusMesh" id="TorusMesh_pm3w6"]
+inner_radius = 0.55
+outer_radius = 0.4
+rings = 24
+ring_segments = 6
+
+[node name="Node3D" type="Node3D" node_paths=PackedStringArray("rope")]
+script = SubResource("GDScript_upk8t")
+rope = NodePath("Start/RopeOrigin")
+
+[node name="Start" type="RigidBody3D" parent="."]
+transform = Transform3D(-3.72529e-08, 0.852248, 0.523138, -1, -4.37114e-08, 0, 2.28671e-08, -0.523138, 0.852248, -0.45, 1.375, 0)
+freeze = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Start"]
+transform = Transform3D(1, -8.88178e-16, 0, -8.88178e-16, 1, 0, 0, 0, 1, 0, 0.423114, 0)
+shape = SubResource("CapsuleShape3D_38vm8")
+
+[node name="RopeOrigin" parent="Start" node_paths=PackedStringArray("_rope_start", "_rope_end") instance=ExtResource("1_t0b1b")]
+rope_initial_length = 5.0
+layer = 536870912
+mask = 536870912
+rope_material = ExtResource("2_uyufu")
+_rope_start = NodePath("..")
+_rope_end = NodePath("../../End")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Start"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.21026e-08, 0.505647, 0)
+mesh = SubResource("CylinderMesh_idawa")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00259733, 1.40981, 3.95932)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.613557, 0)
+collision_layer = 536870913
+collision_mask = 536870913
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("BoxShape3D_2gpbb")
+
+[node name="End" type="RigidBody3D" parent="."]
+collision_layer = 536870913
+collision_mask = 536870913
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="End"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -0.5, 0)
+shape = SubResource("CylinderShape3D_nqbs7")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="End"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -0.5, 0)
+mesh = SubResource("TorusMesh_pm3w6")

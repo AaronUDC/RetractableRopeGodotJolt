@@ -1,0 +1,76 @@
+[gd_scene load_steps=6 format=3 uid="uid://dh5p6u8ll0wws"]
+
+[ext_resource type="Script" path="res://utils/sphere.gd" id="1_vsi7y"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_oj0qy"]
+radius = 0.3
+height = 0.6
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_ceniu"]
+radius = 0.3
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_fxx16"]
+top_radius = 0.2
+bottom_radius = 0.2
+height = 1.0
+radial_segments = 12
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_yhcif"]
+height = 1.0
+radius = 0.2
+
+[node name="Node3D" type="Node3D"]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.986996, -0.07098, 0.144223, 0, 0.897225, 0.441574, -0.160743, -0.435832, 0.885558, 0.640987, 2.10103, 2.77901)
+fov = 92.1086
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.865536, 0.110391, -0.488529, 0.500846, -0.190771, 0.844251, 0, -0.975408, -0.220408, -1.20371, 2.24335, -3.56345)
+
+[node name="RigidBody3D" type="RigidBody3D" parent="."]
+axis_lock_angular_y = true
+freeze = true
+script = ExtResource("1_vsi7y")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D"]
+mesh = SubResource("SphereMesh_oj0qy")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D"]
+shape = SubResource("SphereShape3D_ceniu")
+
+[node name="JoltPinJoint3D" type="JoltPinJoint3D" parent="RigidBody3D"]
+node_a = NodePath("..")
+node_b = NodePath("../../0")
+solver_velocity_iterations = 20
+solver_position_iterations = 10
+
+[node name="0" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.458064, 0)
+axis_lock_angular_y = true
+can_sleep = false
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="0"]
+mesh = SubResource("CylinderMesh_fxx16")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="0"]
+shape = SubResource("CylinderShape3D_yhcif")
+
+[node name="JoltConeTwistJoint3D" type="JoltConeTwistJoint3D" parent="0"]
+swing_limit_span = 2.51327
+twist_limit_enabled = true
+twist_limit_span = 0.0907571
+node_a = NodePath("..")
+node_b = NodePath("../../1")
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0, -0.486628, 0)
+
+[node name="1" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.46447, 0)
+can_sleep = false
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="1"]
+mesh = SubResource("CylinderMesh_fxx16")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="1"]
+shape = SubResource("CylinderShape3D_yhcif")

@@ -1,0 +1,33 @@
+[gd_scene load_steps=4 format=3 uid="uid://btji3qbvo2r52"]
+
+[ext_resource type="Script" path="res://addons/retractable_rope_jolt/rope_controller.gd" id="1_f83su"]
+[ext_resource type="PackedScene" uid="uid://crgywwnq4ds3q" path="res://addons/retractable_rope_jolt/rope_mesh/rope_mesh.tscn" id="2_pggdk"]
+[ext_resource type="Script" path="res://addons/retractable_rope_jolt/rope_hole/rope_hole.gd" id="3_feh8h"]
+
+[node name="RopeOrigin" type="Node3D"]
+script = ExtResource("1_f83su")
+
+[node name="Mesh" parent="." instance=ExtResource("2_pggdk")]
+top_level = true
+_rope_material = null
+
+[node name="Hole" type="JoltGeneric6DOFJoint3D" parent="."]
+linear_limit_y/upper = 0.5
+linear_spring_x/enabled = true
+linear_spring_x/frequency = 10.0
+linear_spring_y/enabled = true
+linear_spring_y/frequency = 10.0
+linear_spring_y/damping = 0.2
+linear_spring_z/enabled = true
+linear_spring_z/frequency = 10.0
+angular_limit_x/upper = 1.5708
+angular_limit_x/lower = -1.5708
+angular_limit_y/upper = 0.0872665
+angular_limit_y/lower = -0.0872665
+angular_limit_z/upper = 1.5708
+angular_limit_z/lower = -1.5708
+solver_velocity_iterations = 20
+solver_position_iterations = 8
+script = ExtResource("3_feh8h")
+
+[node name="Segments" type="Node" parent="."]

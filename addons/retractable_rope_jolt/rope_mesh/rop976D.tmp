@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://ntauwpy2chse"]
+
+[ext_resource type="Script" path="res://rope/rope_generator.gd" id="1_113ru"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_wwq66"]
+radius = 0.1
+height = 0.2
+
+[node name="RopeGenerator" type="Node3D"]
+script = ExtResource("1_113ru")
+rope_legth = 10.4
+
+[node name="Segments" type="Node" parent="."]
+
+[node name="Starting_point" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Starting_point"]
+mesh = SubResource("SphereMesh_wwq66")
+skeleton = NodePath("../..")
+
+[node name="RayCast3D" type="RayCast3D" parent="Starting_point"]
+target_position = Vector3(0, -2, 0)

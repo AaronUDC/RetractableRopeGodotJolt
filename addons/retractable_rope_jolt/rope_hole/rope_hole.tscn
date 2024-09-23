@@ -1,0 +1,22 @@
+[gd_scene load_steps=2 format=3 uid="uid://b27wig8yyqopl"]
+
+[ext_resource type="Script" path="res://addons/retractable_rope_jolt/rope_hole/rope_hole.gd" id="1_rsbfg"]
+
+[node name="RopeHole" type="JoltGeneric6DOFJoint3D"]
+linear_limit_y/upper = 1.0
+linear_spring_x/enabled = true
+linear_spring_x/frequency = 1.0
+linear_spring_x/damping = 1.0
+linear_spring_y/enabled = true
+linear_spring_y/frequency = 10.0
+linear_spring_y/damping = 0.2
+linear_spring_z/enabled = true
+linear_spring_z/frequency = 1.0
+linear_spring_z/damping = 1.0
+angular_limit_x/upper = 1.5708
+angular_limit_x/lower = -1.5708
+angular_limit_y/upper = 0.0872665
+angular_limit_y/lower = -0.0872665
+angular_limit_z/upper = 1.5708
+angular_limit_z/lower = -1.5708
+script = ExtResource("1_rsbfg")

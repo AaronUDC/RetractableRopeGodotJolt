@@ -1,0 +1,57 @@
+[gd_scene load_steps=9 format=3 uid="uid://b0g3po6b4jxvi"]
+
+[ext_resource type="PackedScene" uid="uid://b63jaqar23iun" path="res://player/actor.tscn" id="1_h2d4q"]
+[ext_resource type="PackedScene" uid="uid://ntauwpy2chse" path="res://rope/rope_generator.tscn" id="1_qcefa"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_0db35"]
+sky_energy_multiplier = 2.0
+
+[sub_resource type="Sky" id="Sky_gkh20"]
+sky_material = SubResource("ProceduralSkyMaterial_0db35")
+
+[sub_resource type="Environment" id="Environment_jygg4"]
+background_mode = 2
+sky = SubResource("Sky_gkh20")
+ambient_light_source = 3
+reflected_light_source = 2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_uynli"]
+size = Vector3(10, 0.035, 10)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7eae5"]
+albedo_color = Color(0.303233, 0.303233, 0.303233, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_la8rs"]
+size = Vector2(10, 10)
+
+[node name="Node3D" type="Node3D"]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(-0.0697531, 0.491224, -0.868236, 0, 0.870356, 0.492423, 0.997564, 0.034348, -0.06071, -4.73705, 5.00112, -0.130621)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.6288, -0.318052, -0.709545, 0.735177, -0.0539997, 0.675721, -0.25323, -0.946534, 0.19987, -4.29488, 1.62136, -0.158471)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_jygg4")
+
+[node name="Plataforma" type="StaticBody3D" parent="."]
+collision_layer = 536870913
+collision_mask = 536870913
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Plataforma"]
+shape = SubResource("BoxShape3D_uynli")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Plataforma"]
+material_override = SubResource("StandardMaterial3D_7eae5")
+mesh = SubResource("PlaneMesh_la8rs")
+
+[node name="PlayerCharacter" parent="." node_paths=PackedStringArray("camera") instance=ExtResource("1_h2d4q")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.10177, 0)
+camera = NodePath("../Camera3D")
+
+[node name="RopeGenerator" parent="PlayerCharacter" instance=ExtResource("1_qcefa")]
+transform = Transform3D(1, 0, 0, 0, -0.750826, -0.6605, 0, 0.6605, -0.750826, 0, -0.225, -0.53)
+segment_layer = 536870912
+segment_mask = 536870912

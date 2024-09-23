@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://b63jaqar23iun"]
+
+[ext_resource type="Script" path="res://player/actor.gd" id="1_ptxpg"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_c5ot8"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_f6a52"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_tq6d5"]
+size = Vector3(0.5, 0.5, 0.5)
+
+[node name="PlayerCharacter" type="CharacterBody3D"]
+collision_layer = 536870913
+platform_floor_layers = 3758096383
+script = ExtResource("1_ptxpg")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_c5ot8")
+
+[node name="model" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_f6a52")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.654042, 0.27052)
+mesh = SubResource("BoxMesh_tq6d5")
